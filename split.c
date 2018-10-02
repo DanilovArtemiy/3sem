@@ -16,8 +16,6 @@ void Split(char* string, char* delimiters, char*** tokens, int* tokensCount){
 	*tokensCount=i;
 }
 
-
-
 int main(){
 	int i=0,j=0;
 	char string[MAX_STRING_SIZE];

@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+// после бинарных операторов и запятых ставье пробел: char k = 'a'; strcat(s, ns); и т.п.
 
 void GenerateString(int n,char* string){
 	int i;
