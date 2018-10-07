@@ -5,10 +5,12 @@
 #define MAX_TOKENS_COUNT 100
 #define MAX_DELIMITERS_SIZE 10
 
+// FIXIT: я в упражнении про abacaba писал замечания, и здесь они тоже присутствуют. посмотрите мой комментарий к abacaba и 
+// поправьте данное упражнение, пожалуйста
 
 void Split(char* string, char* delimiters, char*** tokens, int* tokensCount){
 	int i=0;
-	(*tokens[i])=strtok(string,delimiters);
+	*tokens[i]=strtok(string,delimiters);
 	while ((*tokens)[i]!=NULL){
 		i++;
 		(*tokens)[i]=strtok(NULL,delimiters);
