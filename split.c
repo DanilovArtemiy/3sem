@@ -1,11 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+
 #define MAX_STRING_SIZE 100
 #define MAX_TOKENS_COUNT 100
 #define MAX_DELIMITERS_SIZE 10
 
-void Split (char* string, char* delimiters, char*** tokens, int* tokensCount){
+void Split (char* string, char* delimiters, char*** tokens, int* tokensCount) {
 	int i = 0;
 	*tokens[i] = strtok(string, delimiters);
 	while ((*tokens)[i] != NULL){
@@ -16,7 +17,7 @@ void Split (char* string, char* delimiters, char*** tokens, int* tokensCount){
 }
 
 int main(){
-	int i = 0,j = 0;
+	int i = 0, j = 0;
 	char string[MAX_STRING_SIZE];
 	int tokensCount = 0;
 	char delimiters[MAX_DELIMITERS_SIZE];
