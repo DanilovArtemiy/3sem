@@ -9,8 +9,20 @@
 #define name1 "a.fifo"
 #define name2 "aa.fifo"
 
-// FIXIT: Хорошо, но нужно избавиться от повторения похожих участков кода
-// Возможно получится как-то перегруппировать if'ы или вынести что-то в отдельные ф-и с параметрами, какой файл fifo использовать
+
+void Write(int fd[], char str[]){
+	while(1){
+		fgets(str, MAX_STRING_SIZE, stdin);
+		write(fd[0], str, MAX_STRING_SIZE);
+	}
+}
+
+void Read(int fd[], char str[]){
+	while(1){
+		read(fd[1], str, MAX_STRING_SIZE);
+		printf("%s", str);
+	}
+}
 
 int main(int argc, char *argv[]){
         int fd[2];
@@ -22,36 +34,24 @@ int main(int argc, char *argv[]){
 		pid = fork();
 		if (pid > 0){
 			fd[0] = open(name1, O_WRONLY);
-			while(1){
-				fgets(str, MAX_STRING_SIZE, stdin);
-				write(fd[0], str, MAX_STRING_SIZE);
-			}
-			exit(-1);
+			Write(fd, str);
 		} else {
-			fd[1] = open(name2,O_RDONLY);		
-			while(1){
-				read(fd[1], str, MAX_STRING_SIZE);
-				printf("%s", str);
-			}
-			exit(-1);
+			fd[1] = open(name2, O_RDONLY);		
+			Read(fd, str);
 		}
+		exit(-1);
+
 	} else if (strcmp(argv[1], "1")){
 		pid = fork();
 		if (pid > 0){
 			fd[1] = open(name1, O_RDONLY);
-			while(1){
-				read(fd[1], str, MAX_STRING_SIZE);
-				printf("%s", str);
-			}
-			exit(-1);
+			Read(fd, str);
 		} else {
 			fd[0] = open(name2, O_WRONLY);
-			while(1){
-				fgets(str, MAX_STRING_SIZE, stdin);
-				write(fd[0], str, MAX_STRING_SIZE);
-			}
-			exit(-1);
+			Write(fd, str);
 		}
+		exit(-1);
+	
 	} else {
 		printf("Ошибка");
 	}
