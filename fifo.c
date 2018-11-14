@@ -25,61 +25,28 @@ void Read(int fd[], char str[]){
 }
 
 
-/*FIXIT:
-Первая итерация прошла успешно. Давайте ещё укоротим. Смотрите, вот первая часть
-		pid = fork();
-		if (pid > 0){
-			fd[0] = open(name1, O_WRONLY);
-			Write(fd, str);
-		} else {
-			fd[1] = open(name2, O_RDONLY);		
-			Read(fd, str);
-		}
-		exit(-1);
-		
-А вот вторая:
-		pid = fork();
-		if (pid > 0){
-			fd[0] = open(name2, O_WRONLY);
-			Write(fd, str);
-		} else {
-			fd[1] = open(name1, O_RDONLY);
-			Read(fd, str);
-		}
-		exit(-1);
-
-Согласитесь, что единственное отличие в name1 и name2 ...
-Кажется, эти кусочки кода можно также вынести в отдельную ф-ю.
-*/
-
-int main(int argc, char *argv[]){
-        int fd[2];
+void Do(char* n1, char* n2){
+	int fd[2];
 	pid_t pid;
 	char str[MAX_STRING_SIZE];
-	mknod(name1, S_IFIFO | 0666, 0);
+	pid = fork();
+	if (pid > 0){
+		fd[0] = open(n1, O_WRONLY);
+		Write(fd, str);
+	} else {
+		fd[1] = open(n2, O_RDONLY);		
+		Read(fd, str);
+	}
+	exit(-1);
+}	
+
+int main(int argc, char *argv[]){
+      	mknod(name1, S_IFIFO | 0666, 0);
 	mknod(name2 ,S_IFIFO | 0666, 0);
 	if (strcmp(argv[1], "0")){
-		pid = fork();
-		if (pid > 0){
-			fd[0] = open(name1, O_WRONLY);
-			Write(fd, str);
-		} else {
-			fd[1] = open(name2, O_RDONLY);		
-			Read(fd, str);
-		}
-		exit(-1);
-
+		Do(name1,name2);
 	} else if (strcmp(argv[1], "1")){
-		pid = fork();
-		if (pid > 0){
-			fd[1] = open(name1, O_RDONLY);
-			Read(fd, str);
-		} else {
-			fd[0] = open(name2, O_WRONLY);
-			Write(fd, str);
-		}
-		exit(-1);
-	
+		Do(name2,name1);
 	} else {
 		printf("Ошибка");
 	}
